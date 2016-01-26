@@ -16,9 +16,10 @@ class mcollective::facts inherits mcollective::facts::cronjob {
   # Just in case they define the variable and include the class both
   if( ! $mcollective::facts::cronjob::run_every ) {
     # Override to enable and set minutes
-    Cron['mcollective-facts'] {
-      ensure => present,
-      minute => '*/10',
+    Cron['mcollective-facts'] { 
+      ensure      => present,
+      minute      => '*/10',
+      environment => 'PATH=/bin:/usr/bin:/usr/sbin:/opt/puppetlabs/bin',
     }
   }
 }
