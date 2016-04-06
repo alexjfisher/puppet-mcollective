@@ -99,6 +99,7 @@ class mcollective(
   $psk_key              = undef,   # will be checked if provider = psk
   $psk_callertype       = 'uid',
   $activemq_base64      = undef, # Can be set to true to set 'plugin.activemq.base64 = yes' in server.cfg/client.cfg configuration files.
+  $site_module          = undef, # a user specified 'site' module to use as a puppet file server source for ssl certs etc
 )
   inherits mcollective::params {
 
@@ -149,6 +150,10 @@ class mcollective(
         group  => 0,
         mode   => '0555',
       }
+      $_site_module = $site_module ? {
+        undef   => '',
+        default => "${site_module}/",
+      }
       @file { "${etcdir}/ssl/server/public.pem":
         ensure  => file,
         owner   => 0,
@@ -156,7 +161,7 @@ class mcollective(
         mode    => '0444',
         links   => follow,
         replace => true,
-        source  => 'puppet:///modules/mcollective/ssl/server/public.pem',
+        source  => "puppet:///modules/${_site_module}mcollective/ssl/server/public.pem",
       }
     }
   }
