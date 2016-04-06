@@ -136,6 +136,10 @@ class mcollective::client(
   $disc_method  = 'mc',
   $disc_options = undef,
   $da_threshold = '10',
+
+  # SSL Plugin Client Keys
+  $ssl_public_key  = "${::ssldir}/public_keys/${::clientcert}.pem",
+  $ssl_private_key = "${::ssldir}/private_keys/${::clientcert}.pem",
 )
 inherits mcollective {
 
@@ -148,6 +152,9 @@ inherits mcollective {
   # Validate that client username and password were supplied
   validate_re( $mcollective::client_user, '^.{5}', 'Please provide a client username' )
   validate_re( $mcollective::client_password, '^.{12}', 'Please provide at last twelve characters in client password' )
+
+  validate_absolute_path( $ssl_public_key )
+  validate_absolute_path( $ssl_private_key )
 
   package { $package:
     ensure  => $version,

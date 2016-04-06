@@ -52,6 +52,8 @@ plugin.sshkey.client.known_hosts = <%= @sshkey_known_hosts %>
 <% elsif( scope.lookupvar('mcollective::security_provider') == 'ssl' ) then -%>
 securityprovider = ssl
 plugin.ssl_server_public = <%= scope.lookupvar('mcollective::etcdir') -%>/ssl/server/public.pem
+plugin.ssl_client_public = <%= @ssl_public_key %>
+plugin.ssl_client_private = <%= @ssl_private_key %>
 <% elsif( scope.lookupvar('mcollective::security_provider') == 'aes_security' ) then -%>
 securityprovider = aes_security
 <% end -%>
